@@ -1,5 +1,3 @@
-import re
-
 LIST_OF_PASSWORDS_FILE = "list_of_passwords.txt"
 POLICY_PASSWORD_DELIMITER = ':'
 MIN_MAX_DELIMITER = '-'
