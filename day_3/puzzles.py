@@ -27,23 +27,25 @@ def create_matrix_of_map():
 
     return map_matrix
 
-def fly_through_matrix_and_count_trees(map_matrix):
+def fly_through_matrix_and_count_trees(map_matrix, slope):
     """
-    Fly through the map with the given slope (3 right, 1 down)
-    and count all trees which come to our way.
+    Fly through the map with the given slope (:= (right, down)) and count all
+    trees which come into our way.
 
     Note: Due to the fact that the matrix is repeated to the right several times,
     a modulo operation with the number of columns is used to simulate it.
     """
     nb_rows = map_matrix.shape[0]
     nb_cols = map_matrix.shape[1]
+    slope_right = slope[0]
+    slope_down = slope[1]
     nb_trees = 0
     col = 0
 
-    # starting at index [0][0] our first top is [1][3]
-    for row in range(1, nb_rows):
+    # starting at index [0][0] our first stop is at index [slope_down][slope_right]
+    for row in range(slope_down, nb_rows, slope_down):
         # wrap around matrix using modulo operation
-        col = (col + 3) % nb_cols
+        col = (col + slope_right) % nb_cols
 
         # tree encountered?
         if map_matrix[row][col] == 1:
@@ -52,12 +54,23 @@ def fly_through_matrix_and_count_trees(map_matrix):
     return nb_trees
 
 def compute_solution_of_puzzle():
-    """ Find the number of trees one encounters following the map in given slope """
+    """ Find the number of trees one encounters following the map in given slopes """
     map_matrix = create_matrix_of_map()
-    nb_of_trees = fly_through_matrix_and_count_trees(map_matrix)
 
-    print("[+] Solution of day3/puzzle1: {} trees encountered on the fly through the map"\
+    nb_of_trees = fly_through_matrix_and_count_trees(map_matrix, (3, 1)) # slope: 3 right, 1 down
+
+    print("[+] Solution of day3/puzzle1: {} trees encountered on the flight through the map"\
           .format(nb_of_trees))
+
+    nb_of_trees_slope_1 = fly_through_matrix_and_count_trees(map_matrix, (1, 1)) # slope: 1 right, 1 down
+    nb_of_trees_slope_2 = fly_through_matrix_and_count_trees(map_matrix, (3, 1)) # slope: 3 right, 1 down
+    nb_of_trees_slope_3 = fly_through_matrix_and_count_trees(map_matrix, (5, 1)) # slope: 5 right, 1 down
+    nb_of_trees_slope_4 = fly_through_matrix_and_count_trees(map_matrix, (7, 1)) # slope: 7 right, 1 down
+    nb_of_trees_slope_5 = fly_through_matrix_and_count_trees(map_matrix, (1, 2)) # slope: 1 right, 2 down
+
+    print("[+] Solution of day3/puzzle2: {} trees encountered on the flights through the map"\
+          .format(nb_of_trees_slope_1 * nb_of_trees_slope_2 * nb_of_trees_slope_3 * nb_of_trees_slope_4 *\
+                  nb_of_trees_slope_5))
 
 if __name__ == "__main__":
     compute_solution_of_puzzle()
