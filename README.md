@@ -10,3 +10,5 @@ Code to solve the puzzles of Advent of Code 2020
 - Day 3  
     - [Puzzle 1](https://adventofcode.com/2020/day/3): Find the total number of trees encountered when flying through a map of '.' (:= no tree) and '#' (:= tree) with a slope of 3 to the right and 1 down  
     - [Puzzle 2](https://adventofcode.com/2020/day/3#part2): Find the total number of trees (multiplied) encountered when flying through a map of '.' (:= no tree) and '#' (:= tree) with different slopes  
+- Day 4  
+    - [Puzzle 1](https://adventofcode.com/2020/day/4): Find the total number of valid passports given a file of passports as dictionaries  
