@@ -13,3 +13,5 @@ Code to solve the puzzles of Advent of Code 2020
 - Day 4  
     - [Puzzle 1](https://adventofcode.com/2020/day/4): Find the total number of valid passports given a file of passports as dictionaries  
     - [Puzzle 2](https://adventofcode.com/2020/day/4#part2): Find the total number of valid passports with all entries holding valid values    
+- Day 5  
+    - [Puzzle 1](https://adventofcode.com/2020/day/5): Find the hightest seat-ID given a list of 'binary-encoded' boarding passes  
