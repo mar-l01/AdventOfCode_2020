@@ -15,3 +15,4 @@ Code to solve the puzzles of Advent of Code 2020
     - [Puzzle 2](https://adventofcode.com/2020/day/4#part2): Find the total number of valid passports with all entries holding valid values    
 - Day 5  
     - [Puzzle 1](https://adventofcode.com/2020/day/5): Find the hightest seat-ID given a list of 'binary-encoded' boarding passes  
+    - [Puzzle 2](https://adventofcode.com/2020/day/5#part2): Find the missing seat-ID, which belongs to you, given a list of 'binary-encoded' boarding passes  
