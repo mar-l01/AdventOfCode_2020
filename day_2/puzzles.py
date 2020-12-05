@@ -23,6 +23,8 @@ def get_policy_password_list():
 
     return policy_password_list
 
+# -------------------------- Puzzle 1 --------------------------
+
 def is_valid_letter_occurrence_in_password(policy, password):
     """
     Check if given password matches its policy: Iterate over the
@@ -30,12 +32,14 @@ def is_valid_letter_occurrence_in_password(policy, password):
     if it matches the required amount of occurrences.
     """
     nb_of_occurrences = 0
-    
+
     for char in password:
         if char == policy["letter"]:
             nb_of_occurrences += 1
 
     return policy["min"] <= nb_of_occurrences <= policy["max"]
+
+# -------------------------- Puzzle 2 --------------------------
 
 def is_valid_letter_position_in_password(policy, password):
     """
@@ -59,7 +63,9 @@ def is_valid_letter_position_in_password(policy, password):
 
     # xor both booleans -> letter is allowed to be at exactly one position only
     return letter_at_pos_min ^ letter_at_pos_max
-    
+
+# -------------------------- Solution of puzzles 1 and 2 --------------------------
+
 def compute_solution_of_puzzle():
     """ Find the passwords which do not match their according policy """
     policy_password_list = get_policy_password_list()
@@ -77,7 +83,7 @@ def compute_solution_of_puzzle():
           .format(nb_of_valid_passwords_puzzle_1))
 
     print("[+] Solution of day2/puzzle2: {} valid passwords are given"\
-          .format(nb_of_valid_passwords_puzzle_2)) 
+          .format(nb_of_valid_passwords_puzzle_2))
 
 if __name__ == "__main__":
     compute_solution_of_puzzle()

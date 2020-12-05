@@ -18,13 +18,13 @@ def get_list_of_passports():
           with all key-value pairs in that line
     """
     list_of_passports = []
-    
+
     with open(PASSPORTS_FILE, 'r') as passports_file:
         passport = {}
         for pp_line in passports_file:
             # remove spaces
             pp_line = pp_line.strip()
-            
+
             # empty line?
             if not pp_line:
                 # yes -> end of currently processed passport: add it to list, start anew
@@ -39,7 +39,7 @@ def get_list_of_passports():
         # do not forget to append the last passport
         list_of_passports.append(passport)
 
-    return list_of_passports  
+    return list_of_passports
 
 # -------------------------- Puzzle 1 --------------------------
 
@@ -99,7 +99,7 @@ def all_passport_entries_valid(passport):
             break
 
     return all_entries_valid
-    
+
 def is_passport_entry_valid(passport_entry):
     """ Check if given passport entry (key, value) is valid """
     pp_key = passport_entry[0]
@@ -146,7 +146,7 @@ def is_year_valid(str_year, year_min, year_max):
     # year has to be given as 4 digits
     if len(str_year) == 4:
         is_year_valid = is_number_valid(str_year, year_min, year_max)
-        
+
     return is_year_valid
 
 def is_height_valid(str_height):
@@ -166,8 +166,8 @@ def is_height_valid(str_height):
         return is_height_valid
 
     # expect the first characters until the second to last to determine the height
-    height = str_height[:-2]        
-    
+    height = str_height[:-2]
+
     # expect the last two characters to determine the height unit
     height_unit = str_height[-2:]
 
@@ -190,7 +190,7 @@ def is_hcl_valid(str_hcl):
     if len(str_hcl) == expected_length and re.match(pattern, str_hcl):
         is_hcl_valid = True
 
-    return is_hcl_valid 
+    return is_hcl_valid
 
 def is_ecl_valid(str_ecl):
     """
@@ -225,5 +225,6 @@ def compute_solution_of_puzzle():
     list_of_passports_with_valid_entries = get_passports_with_valid_entries(list_of_valid_passports)
     print("[+] Solution of day4/puzzle2: {} passports have all entries containing valid values"\
           .format(len(list_of_passports_with_valid_entries)))
+
 if __name__ == "__main__":
     compute_solution_of_puzzle()

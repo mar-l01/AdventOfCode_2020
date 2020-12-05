@@ -9,6 +9,8 @@ def get_list_of_expenses():
 
     return expenses_list
 
+# -------------------------- Puzzle 1 --------------------------
+
 def find_two_expenses(expenses_list):
     """
     Imagine a matrix with row and colum representing the given list of
@@ -24,6 +26,8 @@ def find_two_expenses(expenses_list):
 
     print("[!] Did not find two values 'a' and 'b' which met the condition: sum(a,b) = 2020")
     return 0, 0
+
+# -------------------------- Puzzle 2 --------------------------
 
 def find_three_expenses(expenses_list):
     """
@@ -41,6 +45,8 @@ def find_three_expenses(expenses_list):
 
     print("[!] Did not find three values 'a', 'b' and 'c' which met the condition: sum(a,b,c) = 2020")
     return 0, 0, 0
+
+# -------------------------- Solution of puzzles 1 and 2 --------------------------
 
 def compute_solution_of_puzzle():
     """ Find the numbers which add up to 2020 and return their product. """

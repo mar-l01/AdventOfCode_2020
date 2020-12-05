@@ -27,6 +27,9 @@ def create_matrix_of_map():
 
     return map_matrix
 
+# -------------------------- Puzzle 1 (slope is (3,1)) --------------------------
+# -------------------------- Puzzle 2 (different slopes) ------------------------
+
 def fly_through_matrix_and_count_trees(map_matrix, slope):
     """
     Fly through the map with the given slope (:= (right, down)) and count all
@@ -52,6 +55,8 @@ def fly_through_matrix_and_count_trees(map_matrix, slope):
             nb_trees += 1
 
     return nb_trees
+
+# -------------------------- Solution of puzzles 1 and 2 --------------------------
 
 def compute_solution_of_puzzle():
     """ Find the number of trees one encounters following the map in given slopes """
