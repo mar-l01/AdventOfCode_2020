@@ -16,3 +16,6 @@ Code to solve the puzzles of Advent of Code 2020
 - Day 5  
     - [Puzzle 1](https://adventofcode.com/2020/day/5): Find the hightest seat-ID given a list of 'binary-encoded' boarding passes  
     - [Puzzle 2](https://adventofcode.com/2020/day/5#part2): Find the missing seat-ID, which belongs to you, given a list of 'binary-encoded' boarding passes  
+- Day 6  
+    - [Puzzle 1](https://adventofcode.com/2020/day/6): Find the sum of all 'yes'-answers of all groups given a lists of 'yes'-answers of single groups  
+    - [Puzzle 2](https://adventofcode.com/2020/day/6#part2): Find the sum of all uniform 'yes'-answers of all groups given a lists of 'yes'-answers of single groups  
