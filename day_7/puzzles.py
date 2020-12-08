@@ -78,6 +78,8 @@ def create_bag_rules_matrix(bag_rules_dict, bag_index_dict):
 
     return bag_rules_matrix
 
+# -------------------------- Puzzle 1 --------------------------
+
 def get_number_of_bags_containing_given_bag(bag_rules_matrix, bag_name_col):
     """
     Get the total amount of bags which can contain given bag (defined by 'bag_name_col').
@@ -87,11 +89,11 @@ def get_number_of_bags_containing_given_bag(bag_rules_matrix, bag_name_col):
     contain provided bag.
     """
     list_of_bags = [] # will contain all bag-indices which can contain a gold bag
-    recursive_bag_find(bag_rules_matrix, bag_name_col, list_of_bags)
+    recursive_column_bag_find(bag_rules_matrix, bag_name_col, list_of_bags)
 
     return len(list_of_bags)
 
-def recursive_bag_find(bag_rules_matrix, bag_idx, list_of_bags):
+def recursive_column_bag_find(bag_rules_matrix, bag_idx, list_of_bags):
     """
     Recursively, add all indices which contain the bag-name defined by 'bag_idx' to the
     'list_of_bags'. Function stops if no bag is found
@@ -103,17 +105,53 @@ def recursive_bag_find(bag_rules_matrix, bag_idx, list_of_bags):
             continue
         if item > 0:
             list_of_bags.extend([idx])
-            recursive_bag_find(bag_rules_matrix, idx, list_of_bags)
+            recursive_column_bag_find(bag_rules_matrix, idx, list_of_bags)
+
+# -------------------------- Puzzle 2 --------------------------
+
+def find_number_of_bags_contained_in_given_bag(matrix, row_idx):
+    """
+    Recursive method to get the total number of bags which are contained in a bag defined by given 'row_idx'.
+    For each non-zero cell in above row, search all bags contained in this one, and so on..
+    Once a 'leaf'-bag is reached, the search is over (:= a single bag, which does not contain any other bag)
+    Check if next iteration will result in a 'leaf'-bag, return the number bags currently processed times the
+    number of bags contained within it. If no 'leaf'-bag is reached, return the number of bags currently processed
+    plus this number times the number of bags contained within it (recursive seach).
+    """
+    row = matrix[row_idx, :]
+    
+    # recursive step: check bag(s) which are contained in current bag
+    if not np.all((row == 0)):
+        j = 0
+        for idx, factor in enumerate(row):
+            # find bags which are contained in current bag
+            if factor != 0:
+                if np.all((matrix[idx, :] == 0)):
+                    # 'leaf'-bag reached next: no need to add the factor
+                    j += (factor * find_number_of_bags_contained_in_given_bag(matrix, idx))
+                else:
+                    # 'mid'-bag reached: add the number of bags contained within curren bag plus the amount of current bags
+                    j += (factor + (factor * find_number_of_bags_contained_in_given_bag(matrix, idx)))
+        return j
+    else:
+        # recursive stop: bag which does not contain any other bags
+        return 1
+    
+# -------------------------- Solution of puzzles 1 and 2 --------------------------
 
 def compute_solution_of_puzzle():
     """ Find the sum of 'yes' answers of all groups """
     bag_rules_dict, bag_index_dict = create_bag_rules_dictionary()
     bag_rules_matrix = create_bag_rules_matrix(bag_rules_dict, bag_index_dict)
 
-    shiny_gold_bag_column = bag_index_dict["shiny gold"]
-    nb_bags_containing_a_shiny_gold_bag = get_number_of_bags_containing_given_bag(bag_rules_matrix, shiny_gold_bag_column)
+    shiny_gold_bag_idx = bag_index_dict["shiny gold"]
+    nb_bags_containing_a_shiny_gold_bag = get_number_of_bags_containing_given_bag(bag_rules_matrix, shiny_gold_bag_idx)
     
     print("[+] Solution of day7/puzzle1: {} bags can contain a shiny gold bag".format(nb_bags_containing_a_shiny_gold_bag))
 
+    nb_bags_required_for_a_shiny_gold_bag = find_number_of_bags_contained_in_given_bag(bag_rules_matrix, shiny_gold_bag_idx)
+    
+    print("[+] Solution of day7/puzzle2: {} bags are contained in one shiny golden bag".format(nb_bags_required_for_a_shiny_gold_bag))
+    
 if __name__ == "__main__":
     compute_solution_of_puzzle()

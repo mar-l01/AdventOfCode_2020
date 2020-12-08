@@ -21,3 +21,4 @@ Code to solve the puzzles of Advent of Code 2020
     - [Puzzle 2](https://adventofcode.com/2020/day/6#part2): Find the sum of all uniform 'yes'-answers of all groups given a lists of 'yes'-answers of single groups  
 - Day 7  
     - [Puzzle 1](https://adventofcode.com/2020/day/7): Find the total number of bags (recursively), which can contain a 'shiny golden' bag  
+    - [Puzzle 2](https://adventofcode.com/2020/day/7#part2): Find the total number of bags (recursively), which are contained in one 'shiny golden' bag  
