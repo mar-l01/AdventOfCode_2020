@@ -18,6 +18,12 @@ def create_sum_matrix(numbers_list):
     """
     Create a matrix (m x m) with the provided 'numbers_list' as row and column.
     Each cell content will be the sum of the numbers associated with current row and column.
+
+    For example, let 'numbers_list' be [2, 5, 6, 4] then this matrix will look as follows:
+    0 7  8  6
+    7 0  11 9
+    8 11 0  10
+    6 9  10 0
     """
     matrix_size = len(numbers_list)
     sum_matrix = np.empty((matrix_size, matrix_size))
@@ -67,6 +73,12 @@ def create_continuous_sum_matrix(numbers_list):
     Create a matrix (m x m) with the provided 'numbers_list' as row and column.
     Each cell content will be the sum of the previous numbers plus the current one.
 
+    For example, let 'numbers_list' be [2, 5, 6, 4] then this matrix will look as follows:
+    0 7 13 17
+    0 0 11 15
+    0 0 0  10
+    0 0 0  0
+
     Note: created matrix will be symmetrical --> only consider one half of it!
     """
     matrix_size = len(numbers_list)
@@ -84,7 +96,15 @@ def find_continuous_sequence_which_add_up_to_given_number(numbers_list, cont_sum
     Find a continuous sequence in above list of numbers which add up to the given
     'magic_number'. Use a matrix where each adjacent cell in a row is the sum of the
     previous cell content plus the number associated with current cell.
-    Return those sequence in the 'numbers_list' which is determined by the found sequence.
+    Return the sequence in the 'numbers_list' which is determined by the found sequence.
+
+    For example, let 'numbers_list' be [2, 5, 6, 4] then 'cont_sum_matrix' will look as follows:
+    0 7 13 17
+    0 0 11 15
+    0 0 0  10
+    0 0 0  0
+    Searching for 'magix_number' 11 will result in row with index 1 and cell with index 2. The resulting sequence
+    will thus be numbers_list[1:(1+2+1)] = [2, 5, 4] --> 2 + 5 + 4 = 11
     """
     start_idx = -1
     end_idx = -1
@@ -124,6 +144,8 @@ def compute_solution_of_puzzle():
 
     print("[+] Solution of day9/puzzle2: The sum of the smallest and largest number in continous sequence is: {}"\
           .format(sum_of_largest_and_smallest_value))
+
+    list = [1,2,3,4]
   
 if __name__ == "__main__":
     compute_solution_of_puzzle()
