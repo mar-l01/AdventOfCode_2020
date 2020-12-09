@@ -24,3 +24,4 @@ Code to solve the puzzles of Advent of Code 2020
     - [Puzzle 2](https://adventofcode.com/2020/day/7#part2): Find the total number of bags (recursively), which are contained in one 'shiny golden' bag  
 - Day 8 
     - [Puzzle 1](https://adventofcode.com/2020/day/8): Given a list of instructions, find the 'accumulator-value' right before an infinite loop was detected  
+    - [Puzzle 2](https://adventofcode.com/2020/day/8#part2): Given a list of instructions, break the infinite loop and find the 'accumulator-value' right after finishing the instruction list  
