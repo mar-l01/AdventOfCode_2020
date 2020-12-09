@@ -27,3 +27,4 @@ Code to solve the puzzles of Advent of Code 2020
     - [Puzzle 2](https://adventofcode.com/2020/day/8#part2): Given a list of instructions, break the infinite loop and find the 'accumulator-value' right after finishing the instruction list  
 - Day 9 
     - [Puzzle 1](https://adventofcode.com/2020/day/9): In a given list of numbers, find the one value, which cannot be created by summing up any of two values out of the previous 25 values  
+    - [Puzzle 2](https://adventofcode.com/2020/day/9#part2): In a given list of numbers, find the sum of the smallest and largest value, which define the continuous sequence whose numbers sum up to the value found in puzzle 1  
