@@ -28,3 +28,5 @@ Code to solve the puzzles of Advent of Code 2020
 - Day 9 
     - [Puzzle 1](https://adventofcode.com/2020/day/9): In a given list of numbers, find the one value, which cannot be created by summing up any of two values out of the previous 25 values  
     - [Puzzle 2](https://adventofcode.com/2020/day/9#part2): In a given list of numbers, find the sum of the smallest and largest value, which define the continuous sequence whose numbers sum up to the value found in puzzle 1  
+- Day 10  
+    - [Puzzle 1](https://adventofcode.com/2020/day/10): In a given list of numbers, multiply the amount of 1-differences with the amount of 3-differences. The x-differences are computed by checking two adjacent numbers when sorting the input list in ascending order.  
