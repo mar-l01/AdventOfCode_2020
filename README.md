@@ -33,3 +33,4 @@ Code to solve the puzzles of Advent of Code 2020
     - [Puzzle 2](https://adventofcode.com/2020/day/10#part2): In a given list of numbers, find all possible path which can be taken by adding 1, 2 or 3 in an efficient manner  
 - Day 11  
     - [Puzzle 1](https://adventofcode.com/2020/day/11): Find the total amount of occupied seats when simulating 'seat-taking/leaving' in a seat-map over several interations. Once the map does not change anymore, simulation is stopped.  
+    - [Puzzle 2](https://adventofcode.com/2020/day/11#part2): Find the total amount of occupied seats when simulating 'seat-taking/leaving' (with another set of rules) in a seat-map over several interations. Once the map does not change anymore, simulation is stopped.  

@@ -32,29 +32,44 @@ def get_seat_layout_matrix():
 
     return seat_layout_matrix
 
-def simulate_rounds_until_stabilization(seat_layout):
+def simulate_rounds_until_stabilization(seat_layout, is_puzzle_1=True):
     """
     Start simulating different rounds, always changing the seat_layout. Once the layout does
     not change anymore, a stable state is reached. Then, stop simulation and return the current
     seat layout.
+    If 'is_puzzle_1' is set, the simulation for puzzle 1 is executed, otw. for puzzle 2
     """
     current_seat_layout = seat_layout.copy()
     current_round = 1
 
+    # set function to be run depending on the given flag
+    simulate_one_round = simulate_one_round_puzzle_1 if is_puzzle_1 else\
+                         simulate_one_round_puzzle_2
+
     while(True):
         print("Round #{}".format(current_round))
+
         simulated_seat_layout = simulate_one_round(current_seat_layout)
 
         # stable state reached?
         if np.all(current_seat_layout == simulated_seat_layout):
             break
 
+        # update current seat layout matrix
         current_seat_layout = simulated_seat_layout
         current_round += 1
 
     return current_seat_layout
 
-def simulate_one_round(current_seat_layout):
+def number_of_occupied_seats(surrounding_seat_area):
+    """
+    Check, how many occupied seats (:= 1) are within given 'surrounding_seat_area':
+    """
+    return np.sum(surrounding_seat_area==SEAT_OCCUPIED)
+
+# -------------------------- Puzzle 1 --------------------------
+
+def simulate_one_round_puzzle_1(current_seat_layout):
     """
     Simulate one round of seat occupying / leaving according to following rules:
     - if a seat is empty and there are no occupied adjascent seats within range of 8 seats,
@@ -68,20 +83,24 @@ def simulate_one_round(current_seat_layout):
     # iterate over each matrix element and check adjacent 8 neighbours
     for row_idx, row in enumerate(current_seat_layout):
         for col_idx, col in enumerate(row):
-            # create surrounding area
-            top, bottom, left, right = compute_surrounding_area(row_idx, col_idx,\
-                                                                max_row_idx, max_col_idx)
-            surrounding_seat_area = current_seat_layout[top : bottom, left : right]
-            
-            if col == SEAT_EMPTY:
-                if number_of_occupied_seats(surrounding_seat_area) == 0:
-                    # no occupied seats -> seat occupied from now on
-                    simulated_seat_layout[row_idx, col_idx] = SEAT_OCCUPIED
+            # only consider seats
+            if col != FLOOR:
+                # create surrounding area
+                top, bottom, left, right = compute_surrounding_area(row_idx, col_idx,\
+                                                                    max_row_idx, max_col_idx)
+                surrounding_seat_area = current_seat_layout[top : bottom, left : right]
 
-            elif col == SEAT_OCCUPIED:
-                if number_of_occupied_seats(surrounding_seat_area) > 4:
-                    # 4 or more occupied seats (without current seat) -> seat is empty from now on
-                    simulated_seat_layout[row_idx, col_idx] = SEAT_EMPTY
+                nb_of_occupied_seats = number_of_occupied_seats(surrounding_seat_area)
+
+                if col == SEAT_EMPTY:
+                    if nb_of_occupied_seats == 0:
+                        # no occupied seats -> seat occupied from now on
+                        simulated_seat_layout[row_idx, col_idx] = SEAT_OCCUPIED
+
+                elif col == SEAT_OCCUPIED:
+                    if nb_of_occupied_seats > 4:
+                        # 4 or more occupied seats (without current seat) -> seat is empty from now on
+                        simulated_seat_layout[row_idx, col_idx] = SEAT_EMPTY
 
     return simulated_seat_layout
 
@@ -99,11 +118,232 @@ def compute_surrounding_area(row_idx, col_idx, max_row_idx, max_col_idx):
 
     return top, bottom, left, right
 
-def number_of_occupied_seats(surrounding_seat_area):
+# -------------------------- Puzzle 2 --------------------------
+
+def simulate_one_round_puzzle_2(current_seat_layout):
     """
-    Check, how many occupied seats (:= 1) are within given 'surrounding_seat_area':
+    Simulate one round of seat occupying / leaving according to following rules:
+    - if all adjacent seats (which can be seen from current seat) are empty, occupy seat
+    - if 5 or more adjacent seats (whic can be seen from current seat) are occupied, leave seat
     """
-    return np.sum(surrounding_seat_area==SEAT_OCCUPIED)
+    simulated_seat_layout = current_seat_layout.copy()
+
+    # iterate over each matrix element and check adjacent neighbours
+    for row_idx, row in enumerate(current_seat_layout):
+        for col_idx, col in enumerate(row):
+            # only consider seats
+            if col != FLOOR:
+                number_of_occupied_seats = number_of_occupied_seats_seen_from_current_seat(current_seat_layout,\
+                                                                                           row_idx, col_idx)
+                if col == SEAT_EMPTY:
+                    if number_of_occupied_seats == 0:
+                        # no occupied seats -> seat occupied from now on
+                        simulated_seat_layout[row_idx, col_idx] = SEAT_OCCUPIED
+
+                elif col == SEAT_OCCUPIED:
+                    if number_of_occupied_seats >= 5:
+                        # 5 or more occupied seats (without current seat) -> seat is empty from now on
+                        simulated_seat_layout[row_idx, col_idx] = SEAT_EMPTY
+
+    return simulated_seat_layout
+
+def number_of_occupied_seats_seen_from_current_seat(current_seat_layout, row, col):
+    """
+    From current seat, look to the right, left, top, bottom, top-right, bottom-left,
+    top-left, bottom-right and check the first seat which can be seen.
+    Return the total number of occupied seats seen from current position.
+    """
+    number_of_occupied_seats = 0
+
+    number_of_occupied_seats += (1 if is_right_seat_occupied(current_seat_layout, row, col) else 0)
+    number_of_occupied_seats += (1 if is_left_seat_occupied(current_seat_layout, row, col) else 0)
+    number_of_occupied_seats += (1 if is_top_seat_occupied(current_seat_layout, row, col) else 0)
+    number_of_occupied_seats += (1 if is_bottom_seat_occupied(current_seat_layout, row, col) else 0)
+    number_of_occupied_seats += (1 if is_top_left_seat_occupied(current_seat_layout, row, col) else 0)
+    number_of_occupied_seats += (1 if is_bottom_right_seat_occupied(current_seat_layout, row, col) else 0)
+    number_of_occupied_seats += (1 if is_top_right_seat_occupied(current_seat_layout, row, col) else 0)
+    number_of_occupied_seats += (1 if is_bottom_left_seat_occupied(current_seat_layout, row, col) else 0)
+
+    return number_of_occupied_seats
+
+def is_right_seat_occupied(current_seat_layout, row, col):
+    """
+    Starting from current seat (row, col) go to the right until the first seat is found.
+    Return true if it is occupied, false otw.
+    """
+    is_seat_occupied = False
+
+    i = 0 # iterating index
+    while(True):
+        i += 1
+
+        # out of range?
+        if (col + i) >= current_seat_layout.shape[1]:
+            break
+
+        # once a seat was reached, stop and set flag accordingly
+        if current_seat_layout[row, col + i] != FLOOR:
+            is_seat_occupied = (current_seat_layout[row, col + i] == SEAT_OCCUPIED)
+            break
+
+    return is_seat_occupied
+
+def is_left_seat_occupied(current_seat_layout, row, col):
+    """
+    Starting from current seat (row, col) go to the left until the first seat is found.
+    Return true if it is occupied, false otw.
+    """
+    is_seat_occupied = False
+
+    i = 0 # iterating index
+    while(True):
+        i += 1
+
+        # out of range?
+        if (col - i) < 0:
+            break
+
+        # once a seat was reached, stop and set flag accordingly
+        if current_seat_layout[row, col - i] != FLOOR:
+            is_seat_occupied = (current_seat_layout[row, col - i] == SEAT_OCCUPIED)
+            break
+
+    return is_seat_occupied
+
+def is_top_seat_occupied(current_seat_layout, row, col):
+    """
+    Starting from current seat (row, col) go to the top until the first seat is found.
+    Return true if it is occupied, false otw.
+    """
+    is_seat_occupied = False
+
+    i = 0 # iterating index
+    while(True):
+        i += 1
+
+        # out of range?
+        if (row - i) < 0:
+            break
+
+        # once a seat was reached, stop and set flag accordingly
+        if current_seat_layout[row - i, col] != FLOOR:
+            is_seat_occupied = (current_seat_layout[row - i, col] == SEAT_OCCUPIED)
+            break
+
+    return is_seat_occupied
+
+def is_bottom_seat_occupied(current_seat_layout, row, col):
+    """
+    Starting from current seat (row, col) go to the bottom until the first seat is found.
+    Return true if it is occupied, false otw.
+    """
+    is_seat_occupied = False
+
+    i = 0 # iterating index
+    while(True):
+        i += 1
+
+        # out of range?
+        if (row + i) >= current_seat_layout.shape[0]:
+            break
+
+        # once a seat was reached, stop and set flag accordingly
+        if current_seat_layout[row + i, col] != FLOOR:
+            is_seat_occupied = (current_seat_layout[row + i, col] == SEAT_OCCUPIED)
+            break
+
+    return is_seat_occupied
+
+def is_top_left_seat_occupied(current_seat_layout, row, col):
+    """
+    Starting from current seat (row, col) go to the top-left until the first seat is found.
+    Return true if it is occupied, false otw.
+    """
+    is_seat_occupied = False
+
+    i = 0 # iterating index
+    while(True):
+        i += 1
+
+        # out of range?
+        if (row - i) < 0 or (col - i) < 0:
+            break
+
+        # once a seat was reached, stop and set flag accordingly
+        if current_seat_layout[row - i, col - i] != FLOOR:
+            is_seat_occupied = (current_seat_layout[row - i, col - i] == SEAT_OCCUPIED)
+            break
+
+    return is_seat_occupied
+
+def is_bottom_right_seat_occupied(current_seat_layout, row, col):
+    """
+    Starting from current seat (row, col) go to the bottom-right until the first seat is found.
+    Return true if it is occupied, false otw.
+    """
+    is_seat_occupied = False
+
+    i = 0 # iterating index
+    while(True):
+        i += 1
+
+        # out of range?
+        if (row + i) >= current_seat_layout.shape[0] or (col + i) >= current_seat_layout.shape[1]:
+            break
+
+        # once a seat was reached, stop and set flag accordingly
+        if current_seat_layout[row + i, col + i] != FLOOR:
+            is_seat_occupied = (current_seat_layout[row + i, col + i] == SEAT_OCCUPIED)
+            break
+
+    return is_seat_occupied
+
+def is_top_right_seat_occupied(current_seat_layout, row, col):
+    """
+    Starting from current seat (row, col) go to the top-right until the first seat is found.
+    Return true if it is occupied, false otw.
+    """
+    is_seat_occupied = False
+
+    i = 0 # iterating index
+    while(True):
+        i += 1
+
+        # out of range?
+        if (row - i) < 0 or (col + i) >= current_seat_layout.shape[1]:
+            break
+
+        # once a seat was reached, stop and set flag accordingly
+        if current_seat_layout[row - i, col + i] != FLOOR:
+            is_seat_occupied = (current_seat_layout[row - i, col + i] == SEAT_OCCUPIED)
+            break
+
+    return is_seat_occupied
+
+def is_bottom_left_seat_occupied(current_seat_layout, row, col):
+    """
+    Starting from current seat (row, col) go to the top-right until the first seat is found.
+    Return true if it is occupied, false otw.
+    """
+    is_seat_occupied = False
+    max_positions_bottom_left = min(current_seat_layout.shape[0] - row, col)
+
+    i = 0 # iterating index
+    while(True):
+        i += 1
+
+        # out of range?
+        if (row + i) >= current_seat_layout.shape[0] or (col - i) < 0:
+            break
+
+        # once a seat was reached, stop and set flag accordingly
+        if current_seat_layout[row + i, col - i] != FLOOR:
+            is_seat_occupied = (current_seat_layout[row + i, col - i] == SEAT_OCCUPIED)
+            break
+
+    return is_seat_occupied
+
+# -------------------------- Solution of puzzles 1 and 2 --------------------------
 
 def compute_solution_of_puzzle():
     """ Find the total number of occupied seats once the layout of above map does not change anymore """
@@ -112,6 +352,11 @@ def compute_solution_of_puzzle():
     nb_of_occupied_seats = number_of_occupied_seats(stable_seat_layout)
 
     print("[+] Solution of day11/puzzle1: There are {} seats occupied in the end. ".format(nb_of_occupied_seats))
+
+    stable_seat_layout = simulate_rounds_until_stabilization(seat_layout_matrix, is_puzzle_1=False)
+    nb_of_occupied_seats = number_of_occupied_seats(stable_seat_layout)
+
+    print("[+] Solution of day11/puzzle2: There are {} seats occupied in the end. ".format(nb_of_occupied_seats))
 
 if __name__ == "__main__":
     compute_solution_of_puzzle()
