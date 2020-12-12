@@ -31,3 +31,5 @@ Code to solve the puzzles of Advent of Code 2020
 - Day 10  
     - [Puzzle 1](https://adventofcode.com/2020/day/10): In a given list of numbers, multiply the amount of 1-differences with the amount of 3-differences. The x-differences are computed by checking two adjacent numbers when sorting the input list in ascending order.  
     - [Puzzle 2](https://adventofcode.com/2020/day/10#part2): In a given list of numbers, find all possible path which can be taken by adding 1, 2 or 3 in an efficient manner  
+- Day 11  
+    - [Puzzle 1](https://adventofcode.com/2020/day/11): Find the total amount of occupied seats when simulating 'seat-taking/leaving' in a seat-map over several interations. Once the map does not change anymore, simulation is stopped.  
