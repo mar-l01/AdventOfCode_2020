@@ -29,7 +29,9 @@ def create_navigation_instructions_list():
 
     return navigation_instructions_list
 
-def go_through_navigation_instructions_list(navigation_instructions_list):
+# -------------------------- Puzzle 1 --------------------------
+
+def navigate_ship(navigation_instructions_list):
     """
     Starting from position E:0, N:0. In the beginning the ship is facing east.
     Iterate through the whole instruction list and update current position accordingly.
@@ -42,6 +44,7 @@ def go_through_navigation_instructions_list(navigation_instructions_list):
         instruction = navigation_instruction[INSTRUCTION]
         value = navigation_instruction[VALUE]
 
+        # update ship position accordingly
         if instruction == 'N':
             north_position += value
         elif instruction == 'E':
@@ -51,6 +54,7 @@ def go_through_navigation_instructions_list(navigation_instructions_list):
         elif instruction == 'W':
             east_position -= value
 
+        # turn ship around or move forward
         elif instruction == 'L' or instruction == 'R':
             facing_position = turn_to_position(facing_position, instruction, value)
         elif instruction == 'F':
@@ -119,16 +123,169 @@ def turn_90_degrees_to_the_left(current_facing_position):
         
     return updated_facing_position
 
+# -------------------------- Puzzle 2 --------------------------
+
+def navigate_ship_along_waypoint(navigation_instructions_list):
+    """
+    Starting from position E:0, N:0. In the beginning the ship is facing east.
+    Iterate through the whole instruction list and update current position accordingly.
+    Additional information in comparison to puzzle 1: The instructions are now applied to
+    a waypoint which starts at E:10, N:1. 
+    """
+    ship_east_position = 0
+    ship_north_position = 0
+    waypoint_east_position = 10
+    waypoint_north_position = 1
+    
+    for navigation_instruction in navigation_instructions_list:
+        instruction = navigation_instruction[INSTRUCTION]
+        value = navigation_instruction[VALUE]
+
+        # update waypoint position accordingly
+        if instruction == 'N':
+            waypoint_north_position += value
+        elif instruction == 'E':
+            waypoint_east_position += value
+        elif instruction == 'S':
+            waypoint_north_position -= value
+        elif instruction == 'W':
+            waypoint_east_position -= value
+
+        # rotate waypoint around ship or move ship towards waypoint
+        elif instruction == 'L' or instruction == 'R':
+            waypoint_east_position, waypoint_north_position = rotate_waypoint((waypoint_east_position,\
+                                                                               waypoint_north_position),\
+                                                                               instruction, value)
+        elif instruction == 'F':
+            ship_east_position, ship_north_position = ship_forward_to_waypoint((ship_east_position,\
+                                                                                ship_north_position),\
+                                                                               (waypoint_east_position,\
+                                                                                waypoint_north_position),\
+                                                                               value)
+
+    return ship_east_position, ship_north_position
+
+def ship_forward_to_waypoint(ship_position, waypoint_position, value):
+    """
+    Depending on given 'waypoint_position' ship 'value' steps forward towards the way-point.
+    Both positions are given as tuples (E, N).
+    Return the updated position of the ship
+    """
+    ship_east_pos = ship_position[0]
+    ship_north_pos = ship_position[1]
+    wp_east_pos = waypoint_position[0]
+    wp_north_pos = waypoint_position[1]
+
+    ship_east_pos += (wp_east_pos * value)
+    ship_north_pos += (wp_north_pos * value)
+
+    return ship_east_pos, ship_north_pos
+
+def rotate_waypoint(waypoint_position, instruction, value):
+    """
+    Rotate current waypoint position around the ship depending on given 'instruction'
+    (:= 'L' or 'R'). The position is provided as tuple (E, N)
+    Return updated waypoint position.
+    """
+    updated_waypoint_position = waypoint_position
+    
+    if instruction == 'L':
+        for i in range(value // 90):
+            updated_waypoint_position = rotate_waypoint_90_degrees_to_the_left(updated_waypoint_position)
+
+    elif instruction == 'R':
+        for i in range(value // 90):
+            updated_waypoint_position = rotate_waypoint_90_degrees_to_the_right(updated_waypoint_position)
+            
+    return updated_waypoint_position
+
+def rotate_waypoint_90_degrees_to_the_left(waypoint):
+    """ Rotate waypoint 90 degrees to the left. """
+    east_position = waypoint[0]
+    north_position = waypoint[1]
+
+    # waypoint to the east
+    if east_position >= 0:
+        # waypoint north-east -> move to north-west
+        if north_position >= 0:
+            tmp_pos_east = east_position
+            east_position = -north_position
+            north_position = tmp_pos_east
+
+        # waypoint south-east -> move to north-east
+        else:
+            tmp_pos_east = east_position
+            east_position = -north_position
+            north_position = tmp_pos_east
+            
+    # waypoint to the west
+    elif east_position < 0:
+        # waypoint north-west -> waypoint to south-west
+        if north_position >= 0:
+            tmp_pos_east = east_position
+            east_position = -north_position
+            north_position = tmp_pos_east
+
+        # waypoint south-west -> waypoint to south-east
+        else:
+            tmp_pos_east = east_position
+            east_position = -north_position
+            north_position = tmp_pos_east
+
+    return (east_position, north_position)
+
+def rotate_waypoint_90_degrees_to_the_right(waypoint):
+    """ Rotate waypoint 90 degrees to the right. """
+    east_position = waypoint[0]
+    north_position = waypoint[1]
+
+    # waypoint to the east
+    if east_position >= 0:
+        # waypoint north-east -> waypoint to south-east
+        if north_position >= 0:
+            tmp_pos_east = east_position
+            east_position = north_position
+            north_position = -tmp_pos_east
+            
+        # waypoint to the south-east -> waypoint to south-west
+        else:
+            tmp_pos_east = east_position
+            east_position = north_position
+            north_position = -tmp_pos_east
+
+    # waypoint to the west
+    elif east_position < 0:
+        # waypoint north-west -> waypoint to north-east
+        if north_position >= 0:
+            tmp_pos_east = east_position
+            east_position = north_position
+            north_position = -tmp_pos_east
+            
+        # waypoint at south-west -> waypoint to north-west
+        else:
+            tmp_pos_east = east_position
+            east_position = north_position
+            north_position = -tmp_pos_east
+
+    return east_position, north_position  
+
+# -------------------------- Solution of puzzles 1 and 2 --------------------------
+
 def compute_solution_of_puzzle():
     """
     Compute Manhattan Distance from starting point N:0 / E:0 to the end point after executing
     each navigation instructions.
     """
     navigation_instructions_list = create_navigation_instructions_list()
-    east_position, north_position = go_through_navigation_instructions_list(navigation_instructions_list)
+    east_position, north_position = navigate_ship(navigation_instructions_list)
     manhattan_distance = abs(east_position) + abs(north_position)
 
-    print("[+] Solution of day7/puzzle1: Manhattan Distance of east/west and north/south = {}".format(manhattan_distance))
+    print("[+] Solution of day12/puzzle1: Manhattan Distance of east/west and north/south = {}".format(manhattan_distance))
+
+    east_position, north_position = navigate_ship_along_waypoint(navigation_instructions_list)
+    manhattan_distance = abs(east_position) + abs(north_position)
+
+    print("[+] Solution of day12/puzzle2: Manhattan Distance of east/west and north/south = {}".format(manhattan_distance))
 
 if __name__ == "__main__":
     compute_solution_of_puzzle()

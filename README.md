@@ -36,5 +36,6 @@ Code to solve the puzzles of Advent of Code 2020
     - [Puzzle 2](https://adventofcode.com/2020/day/11#part2): Find the total amount of occupied seats when simulating 'seat-taking/leaving' (with another set of rules) in a seat-map over several interations. Once the map does not change anymore, simulation is stopped.  
 - Day 12   
     - [Puzzle 1](https://adventofcode.com/2020/day/12): Find the Manhattan Distance between the starting point and end point of a route after following navigation instructions given as list  
+    - [Puzzle 2](https://adventofcode.com/2020/day/12#part2): Find the Manhattan Distance between the starting point and end point of a route after following navigation instructions (interpreted in another way) given as list   
 
     
