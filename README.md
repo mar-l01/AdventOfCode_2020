@@ -41,4 +41,5 @@ Code to solve the puzzles of Advent of Code 2020
     - [Puzzle 1](https://adventofcode.com/2020/day/13): Find the earliest possible bus to take after arrival at the bus-station given a list of bus-schedules and our arrival time.  
 - Day 14  
     - [Puzzle 1](https://adventofcode.com/2020/day/14): Given a list of memory operations, find the sum of all memory entries which are set.  
+    - [Puzzle 2](https://adventofcode.com/2020/day/14#part2): Given a list of memory operations, find the sum of all memory entries which are set by applying a different set of rules.  
   
