@@ -45,4 +45,5 @@ Code to solve the puzzles of Advent of Code 2020
 - Day 15  
     - [Puzzle 1](https://adventofcode.com/2020/day/15): Play a game of speaking numbers which build upon the recently spoken one. Find the number spoken at 2020th position.  
     - [Puzzle 2](https://adventofcode.com/2020/day/15#part2): Play a game of speaking numbers which build upon the recently spoken one. Find the number spoken at 30000000th position.  
-  
+- Day 16  
+    - [Puzzle 1](https://adventofcode.com/2020/day/16): Given a list of rules and values (referring to ticket numbers), find all values which do not match any given rule.
