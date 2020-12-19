@@ -48,3 +48,5 @@ Code to solve the puzzles of Advent of Code 2020
 - Day 16  
     - [Puzzle 1](https://adventofcode.com/2020/day/16): Given a list of rules and values (referring to ticket numbers), find all values which do not match any given rule.  
     - [Puzzle 2](https://adventofcode.com/2020/day/16#part2): Given a list of rules and values, find the matching rules for values in a list. Multiply all matching values of 'my ticket' which belong to 'departure' fields.  
+- Day 17  
+    - [Puzzle 1](https://adventofcode.com/2020/day/17): Starting from an initial cube-state, count the total number of active cubes when applying a set of rules six times.  
