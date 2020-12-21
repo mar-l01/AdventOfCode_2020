@@ -52,4 +52,5 @@ Code to solve the puzzles of Advent of Code 2020
     - [Puzzle 1](https://adventofcode.com/2020/day/17): Starting from an initial cube-state (3-dim), count the total number of active cubes when applying a set of rules six times.  
     - [Puzzle 2](https://adventofcode.com/2020/day/17#part2): Starting from an initial cube-state (4-dim), count the total number of active cubes when applying a set of rules six times.  
 - Day 18  
-    - [Puzzle 1](https://adventofcode.com/2020/day/18): Given a list of equations, solve each one of them and compute the sum of all results in the end.  
+    - [Puzzle 1](https://adventofcode.com/2020/day/18): Given a list of equations, solve each one of them (no operator precedence) and compute the sum of all results in the end.  
+    - [Puzzle 2](https://adventofcode.com/2020/day/18#part2): Given a list of equations, solve each one of them (plus takes precedence ofter multiply operator) and compute the sum of all results in the end.  
