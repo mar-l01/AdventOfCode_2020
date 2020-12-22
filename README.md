@@ -54,3 +54,5 @@ Code to solve the puzzles of Advent of Code 2020
 - Day 18  
     - [Puzzle 1](https://adventofcode.com/2020/day/18): Given a list of equations, solve each one of them (no operator precedence) and compute the sum of all results in the end.  
     - [Puzzle 2](https://adventofcode.com/2020/day/18#part2): Given a list of equations, solve each one of them (plus takes precedence ofter multiply operator) and compute the sum of all results in the end.  
+- Day 19  
+    - [Puzzle 1](https://adventofcode.com/2020/day/19): Applying a list of rules, find the total number of messages which match the given rule.
